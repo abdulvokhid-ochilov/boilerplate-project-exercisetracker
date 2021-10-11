@@ -8,8 +8,9 @@ router.post("/:_id/exercises", async (req, res) => {
   const id = req.params._id;
   const description = req.body.description;
   const duration = parseInt(req.body.duration);
-  const date =
-    new Date(req.body.date).toDateString() || new Date().toDateString();
+  const date = req.body.date
+    ? new Date(req.body.date).toDateString()
+    : new Date().toDateString();
   const isValid = mongoose.Types.ObjectId.isValid(id);
 
   if (description && id && duration && isValid) {

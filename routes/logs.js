@@ -1,19 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
-const mongoose = require("mongoose");
 
 router.get("/:_id/logs", async (req, res) => {
   // creating a user
-  let tomorrow = new Date();
-  tomorrow.setDate(new Date().getDate() + 1);
-  const id = req.params._id;
-  const from = req.params.from || new Date("1970-01-01");
-  const to = req.params.to || tomorrow;
-  const limit = parseInt(req.params.limit) || 100;
-  const isValid = mongoose.Types.ObjectId.isValid(id);
 
-  if (id && isValid) {
+  const id = req.params._id;
+  const from = req.query.from
+    ? new Date(req.query.from)
+    : new Date("1970-01-01");
+  const to = req.query.to ? new Date(req.query.to) : new Date();
+  const limit = parseInt(req.query.limit) || 100;
+
+  if (id) {
     try {
       let user = await User.findOne({ _id: id }).lean();
 
